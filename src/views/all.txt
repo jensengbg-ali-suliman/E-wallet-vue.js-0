@@ -1,0 +1,111 @@
+<template>
+  <div class="home">
+    <TopView headTitle="e-wallet" cardStatus="active card" />
+    <BankCard v-bind:card="activeCard" />
+    <CardStack @avtivateCard="activateClicked" v-bind:cards="cardsToShow" />
+    <Btn @btnClicked="addCard" btnText="add a new card" background="#fff" txtColor="#000" />
+  </div>
+</template>
+
+<script>
+import TopView from "../components/Top.vue";
+import BankCard from "../components/Card.vue";
+import CardStack from "../components/CardStack.vue";
+import Btn from "../components/button.vue";
+
+export default {
+  components: {
+    TopView,
+    BankCard,
+    CardStack,
+    Btn
+  },
+  name: "Home",
+  data: () => {
+    return {
+      activeCard: {
+        id: "01",
+        holder: "John Snow",
+        number: "5595 5960 0938 9383",
+        bgColor: "#FFAE34",
+        textColor: "#444",
+        company: "Bitcoin",
+        validation: "12/22",
+        ccv: "956"
+      },
+      cardsToShow: [
+        {
+          id: "02",
+          holder: "John Snow",
+          number: "5595 5960 0938 9383",
+          bgColor: "#8B58F9",
+          textColor: "#fffc",
+          company: "Block Chain",
+          validation: "12/22",
+          ccv: "354"
+        },
+        {
+          id: "03",
+          holder: "John Snow",
+          number: "5595 5960 0938 9383",
+          bgColor: "#F33355",
+          textColor: "#fffc",
+          company: "Evil Corp",
+          validation: "12/22",
+          ccv: "262"
+        },
+        {
+          id: "04",
+          holder: "John Snow",
+          number: "5595 5960 0938 9383",
+          bgColor: "#222222",
+          textColor: "#fffc",
+          company: "Ninja",
+          validation: "12/22",
+          ccv: "342"
+        }
+      ]
+    };
+  },
+  methods: {
+    addCard() {
+      console.log("youClicked");
+      this.$router.push("/addCard");
+    },
+    activateClicked(card) {
+      this.cardsToShow.splice(this.cardsToShow.indexOf(card), 1);
+      this.cardsToShow.push(this.activeCard);
+      this.activeCard = card;
+    }
+  }
+};
+</script>
+
+<style>
+.home {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+@media all and (min-width: 600px) {
+  .home {
+    width: 378px;
+  }
+}
+</style>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
