@@ -85,11 +85,8 @@ export default {
       if (isNaN(parseInt(this.validation)) || isNaN(parseInt(this.ccv))) {
         alert("Validation date and CCV must be a number");
       } else {
-        console.log(newCard);
         Cards.cards.push(newCard);
-        console.log(Cards);
         this.$router.push("/");
-        console.log(Cards);
       }
     }
   }
