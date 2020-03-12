@@ -18,6 +18,7 @@
       <p :style="{ 'color': card.textColor}">{{ card.holder }}</p>
       <p :style="{ 'color': card.textColor}">{{card.validation }}</p>
     </article>
+    <button v-if="activeCard" id="delete" @click="deleteCard(card)">&#10005;</button>
   </div>
 </template>
 
@@ -26,15 +27,27 @@ export default {
   methods: {
     cardClicked() {
       this.$emit("cardClicked");
+    },
+    deleteCard(card) {
+      let cards = JSON.parse(window.localStorage.getItem("Cards"));
+      for (let i = 0; i < cards.cards.length; i++) {
+        if (cards.cards[i].id == card.id) {
+          cards.cards.splice(cards.cards.indexOf(cards.cards[i]), 1);
+          window.localStorage.setItem("Cards", JSON.stringify(cards));
+          location.reload();
+        }
+      }
     }
   },
   name: "BankCard",
   props: {
-    card: Object
+    card: Object,
+    activeCard: Boolean
   },
   data: () => {
     return {
-      img: "Bitcoin"
+      img: "Bitcoin",
+      exitBtnShown: false
     };
   }
 };
@@ -56,6 +69,7 @@ img {
   transform: scale(0.8);
 }
 .card {
+  position: relative;
   margin-top: 0.6rem;
   width: 92%;
   height: 12rem;
@@ -104,5 +118,21 @@ img {
       opacity: 0.7;
     }
   }
+}
+
+#delete {
+  width: initial;
+  position: absolute;
+  right: -1.5rem;
+  top: 40%;
+  border-radius: 4px;
+  padding: 0.4rem 0.5rem;
+  background: red;
+  color: #fff;
+  border: none;
+  font-weight: 100;
+  font-size: 0.7rem;
+  text-align: center;
+  cursor: pointer;
 }
 </style>
