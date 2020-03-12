@@ -45,7 +45,6 @@ export default {
   methods: {
     addCard: function() {
       let newId = Math.round(Math.random() * 1000);
-      let newCardNumber = this.cardNumber;
 
       let newCard = {
         id: JSON.stringify(newId),
@@ -74,15 +73,15 @@ export default {
 
       //validation of card number
 
-      if (newCardNumber.length < 16) {
+      if (this.cardNumber.length < 16) {
         alert("Card number must contain 16 numbers!");
-      } else if (newCardNumber.length > 16) {
+      } else if (this.cardNumber.length > 16) {
         alert("Card number must contain only 16 numbers!");
-      } else if (newCardNumber.length == 16) {
-        if (isNaN(parseInt(newCardNumber))) {
+      } else if (this.cardNumber.length == 16) {
+        if (isNaN(parseInt(this.cardNumber))) {
           alert("Card number must be a valid number");
         } else {
-          let number = newCardNumber.split("");
+          let number = this.cardNumber.split("");
           for (let i = 0; i < 4; i++) {
             if (i < 3) {
               newCard.number += number.splice(0, 4).join("") + " ";
@@ -91,22 +90,31 @@ export default {
             }
           }
 
-          // validation of validation date and ccv number
+          // validation of cardholderName
 
-          if (isNaN(parseInt(this.validation)) || isNaN(parseInt(this.ccv))) {
-            alert("Validation date and CCV must be a number");
+          if (!newCard.holder.match(/^[A-Za-z\s]+$/)) {
+            alert("Cardholder name must contain only letters");
           } else {
-            if (
-              this.validation.length > 5 ||
-              this.validation.indexOf("/") == -1
-            ) {
-              alert(
-                "Validation date must be a four digit number and contain a '/'"
-              );
+            // validation of validation date and ccv number
+
+            if (isNaN(parseInt(this.validation)) || isNaN(parseInt(this.ccv))) {
+              alert("Validation date and CCV must be a number");
             } else {
-              this.Cards.cards.push(newCard);
-              window.localStorage.setItem("Cards", JSON.stringify(this.Cards));
-              this.$router.push("/");
+              if (
+                this.validation.length > 5 ||
+                this.validation.indexOf("/") == -1
+              ) {
+                alert(
+                  "Validation date must be a four digit number and contain a '/'"
+                );
+              } else {
+                this.Cards.cards.push(newCard);
+                window.localStorage.setItem(
+                  "Cards",
+                  JSON.stringify(this.Cards)
+                );
+                this.$router.push("/");
+              }
             }
           }
         }
