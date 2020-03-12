@@ -2,7 +2,13 @@
   <div class="addCard">
     <TopView headTitle="add a new bank card" cardStatus="new card" />
     <bank-card v-bind:card="activeCard" />
-    <cardForm />
+    <cardForm
+      @getHolderName="sendHolderName"
+      @getCardNumber="sendCardNumber"
+      @getValidation="sendValidation"
+      @getCcv="sendCcv"
+      @getvendor="sendVendor"
+    />
   </div>
 </template>
 <script>
@@ -31,8 +37,34 @@ export default {
     };
   },
   methods: {
-    addCard() {
-      console.log("Clicked in add card");
+    sendHolderName: function(data) {
+      this.activeCard.holder = data;
+    },
+    sendCardNumber: function(data) {
+      let number = data.match(/.{1,4}/g).join(" ");
+      this.activeCard.number = number;
+    },
+    sendValidation: function(data) {
+      this.activeCard.validation = data;
+    },
+    sendCcv: function(data) {
+      this.activeCard.ccv = data;
+    },
+    sendVendor: function(data) {
+      if (data == "Block Chain") {
+        this.activeCard.bgColor = "#8B58F9";
+        this.activeCard.textColor = "#fffc";
+      } else if (data == "Evil Corp") {
+        this.activeCard.bgColor = "#F33355";
+        this.activeCard.textColor = "#fffc";
+      } else if (data == "Ninja") {
+        this.activeCard.bgColor = "#222222";
+        this.activeCard.textColor = "#fffc";
+      } else if (data == "Bitcoin") {
+        this.activeCard.bgColor = "#FFAE34";
+        this.activeCard.textColor = "#444";
+      }
+      this.activeCard.company = data;
     }
   }
 };
