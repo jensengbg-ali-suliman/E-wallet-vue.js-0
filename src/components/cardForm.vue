@@ -144,7 +144,7 @@ export default {
   }
 
   select {
-    margin: 1rem 0rem 4rem 0rem;
+    margin: 1rem 0rem;
   }
 
   label {
@@ -174,6 +174,7 @@ export default {
   button {
     background: #000;
     color: #fff;
+    margin-top: 0rem;
   }
 }
 </style>
