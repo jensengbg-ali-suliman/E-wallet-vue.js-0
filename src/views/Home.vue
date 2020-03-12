@@ -108,6 +108,7 @@ export default {
   color: red;
   padding-top: 2.6rem;
   line-height: 1.6rem;
+  font-weight: bold;
 }
 
 @media all and (min-width: 600px) {
