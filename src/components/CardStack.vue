@@ -32,7 +32,7 @@ export default {
 <style lang="scss" scoped>
 .cardStack {
   margin-top: 1.6rem;
-  height: 26rem;
+  min-height: 14rem;
   display: flex;
   flex-direction: column;
   align-items: center;
