@@ -2,7 +2,12 @@
   <div id="home">
     <TopView headTitle="e-wallet" cardStatus="active card" />
     <BankCard v-bind:card="activeCard" v-bind:activeCard="true" />
+    <p
+      class="alert"
+      v-if="this.CardsData.length == 0"
+    >Your card stack is empty, press the button bellow to add cards.</p>
     <CardStack @avtivateCard="activateClicked" v-bind:cards="CardsData" />
+
     <Btn @btnClicked="addCard" btnText="add a new card" />
   </div>
 </template>
@@ -41,8 +46,18 @@ export default {
       this.$router.push("/addCard");
     },
     setActiveCard: function() {
-      console.log("asdsad");
-      if (Object.entries(this.activeCard).length === 0) {
+      if (this.CardsData.length === 0) {
+        this.activeCard = {
+          id: "00",
+          holder: "sample card",
+          number: "0000 0000 0000 0000",
+          bgColor: "#D0D0D0",
+          textColor: "#222",
+          company: "Bitcoin",
+          validation: "12/22",
+          ccv: "342"
+        };
+      } else {
         this.activeCard = this.CardsData[0];
       }
     },
@@ -50,31 +65,11 @@ export default {
       this.activeCard = card;
     },
     setStorage() {
+      //localStorage.clear();
       let checkCards = JSON.parse(window.localStorage.getItem("Cards"));
       if (checkCards === null) {
         let cards = {
-          cards: [
-            {
-              id: "04",
-              holder: "john snow",
-              number: "5595 5960 0938 9383",
-              bgColor: "#222222",
-              textColor: "#fffc",
-              company: "Ninja",
-              validation: "12/22",
-              ccv: "342"
-            },
-            {
-              id: "01",
-              holder: "John Snow",
-              number: "5595 5960 0938 9383",
-              bgColor: "#FFAE34",
-              textColor: "#444",
-              company: "Bitcoin",
-              validation: "12/22",
-              ccv: "956"
-            }
-          ]
+          cards: []
         };
         window.localStorage.setItem("Cards", JSON.stringify(cards));
       }
@@ -107,6 +102,12 @@ export default {
   font-size: 1rem;
   background: #fff;
   color: #000;
+}
+
+.alert {
+  color: red;
+  padding-top: 2.6rem;
+  line-height: 1.6rem;
 }
 
 @media all and (min-width: 600px) {
