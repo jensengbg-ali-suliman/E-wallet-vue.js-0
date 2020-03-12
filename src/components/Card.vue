@@ -123,7 +123,7 @@ img {
 #delete {
   width: initial;
   position: absolute;
-  right: -1.5rem;
+  right: -1.6rem;
   top: 40%;
   border-radius: 4px;
   padding: 0.4rem 0.5rem;
