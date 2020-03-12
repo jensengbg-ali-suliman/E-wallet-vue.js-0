@@ -1,13 +1,13 @@
 <template>
   <div class="form">
     <label for="card-number">card number</label>
-    <input type="text" v-model="cardNumber" placeholder="Must be 16 numbers" />
+    <input type="text" maxlength="16" v-model="cardNumber" placeholder="Must be 16 numbers" />
     <label for="cardholder-name">cardholder name</label>
     <input type="text" v-model="cardholderName" placeholder="Firstname Lasname" />
     <section class="validInfo">
       <article>
         <label for="validation">valid thru</label>
-        <input type="text" v-model="validation" placeholder="MMYY" />
+        <input type="text" maxlength="5" v-model="validation" placeholder="MMYY" />
       </article>
       <article>
         <label for="CCV">ccv</label>
@@ -32,6 +32,23 @@ export default {
   components: {
     Btn
   },
+  watch: {
+    cardholderName: function() {
+      this.sendHolderName();
+    },
+    cardNumber: function() {
+      this.sendCardNumber();
+    },
+    validation: function() {
+      this.sendValidation();
+    },
+    ccv: function() {
+      this.sendCcv();
+    },
+    vendor: function() {
+      this.sendVendor();
+    }
+  },
   data: () => {
     return {
       cardNumber: "",
@@ -43,6 +60,23 @@ export default {
     };
   },
   methods: {
+    sendHolderName: function() {
+      this.$emit("getHolderName", this.cardholderName);
+    },
+    sendCardNumber: function() {
+      this.$emit("getCardNumber", this.cardNumber);
+    },
+    sendValidation: function() {
+      this.$emit("getValidation", this.validation);
+    },
+    sendCcv: function() {
+      this.$emit("getCcv", this.ccv);
+    },
+    sendVendor: function() {
+      console.log(this.vendor);
+      this.$emit("getvendor", this.vendor);
+    },
+
     addCard: function() {
       let newId = Math.round(Math.random() * 1000);
 
