@@ -12,7 +12,6 @@ import TopView from "../components/Top.vue";
 import BankCard from "../components/Card.vue";
 import CardStack from "../components/CardStack.vue";
 import Btn from "../components/button.vue";
-import Cards from "../assets/data.json";
 
 export default {
   components: {
@@ -34,8 +33,48 @@ export default {
         validation: "12/22",
         ccv: "956"
       },
-      CardsData: Cards.cards
+      CardsData: JSON.parse(window.localStorage.getItem("Cards")).cards
     };
+  },
+  created() {
+    let checkCards = JSON.parse(window.localStorage.getItem("Cards"));
+    if (checkCards === null) {
+      let cards = {
+        cards: [
+          {
+            id: "02",
+            holder: "john snow",
+            number: "5595 5960 0938 9383",
+            bgColor: "#8B58F9",
+            textColor: "#fffc",
+            company: "Block Chain",
+            validation: "12/22",
+            ccv: "354"
+          },
+          {
+            id: "03",
+            holder: "john snow",
+            number: "5595 5960 0938 9383",
+            bgColor: "#F33355",
+            textColor: "#fffc",
+            company: "Evil Corp",
+            validation: "12/22",
+            ccv: "262"
+          },
+          {
+            id: "04",
+            holder: "john snow",
+            number: "5595 5960 0938 9383",
+            bgColor: "#222222",
+            textColor: "#fffc",
+            company: "Ninja",
+            validation: "12/22",
+            ccv: "342"
+          }
+        ]
+      };
+      window.localStorage.setItem("Cards", JSON.stringify(cards));
+    }
   },
   methods: {
     addCard() {
@@ -53,10 +92,11 @@ export default {
 
 <style>
 .home {
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: space-between;
 }
 
 button {
