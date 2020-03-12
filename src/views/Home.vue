@@ -1,7 +1,7 @@
 <template>
-  <div class="home">
+  <div id="home">
     <TopView headTitle="e-wallet" cardStatus="active card" />
-    <BankCard v-bind:card="activeCard" />
+    <BankCard v-bind:card="activeCard" v-bind:activeCard="true" />
     <CardStack @avtivateCard="activateClicked" v-bind:cards="CardsData" />
     <Btn @btnClicked="addCard" btnText="add a new card" />
   </div>
@@ -21,77 +21,70 @@ export default {
     Btn
   },
   name: "Home",
+  computed: {
+    CardsData() {
+      return JSON.parse(window.localStorage.getItem("Cards")).cards;
+    }
+  },
   data: () => {
     return {
-      activeCard: {
-        id: "01",
-        holder: "John Snow",
-        number: "5595 5960 0938 9383",
-        bgColor: "#FFAE34",
-        textColor: "#444",
-        company: "Bitcoin",
-        validation: "12/22",
-        ccv: "956"
-      },
-      CardsData: JSON.parse(window.localStorage.getItem("Cards")).cards
+      activeCard: {}
     };
   },
   created() {
-    let checkCards = JSON.parse(window.localStorage.getItem("Cards"));
-    if (checkCards === null) {
-      let cards = {
-        cards: [
-          {
-            id: "02",
-            holder: "john snow",
-            number: "5595 5960 0938 9383",
-            bgColor: "#8B58F9",
-            textColor: "#fffc",
-            company: "Block Chain",
-            validation: "12/22",
-            ccv: "354"
-          },
-          {
-            id: "03",
-            holder: "john snow",
-            number: "5595 5960 0938 9383",
-            bgColor: "#F33355",
-            textColor: "#fffc",
-            company: "Evil Corp",
-            validation: "12/22",
-            ccv: "262"
-          },
-          {
-            id: "04",
-            holder: "john snow",
-            number: "5595 5960 0938 9383",
-            bgColor: "#222222",
-            textColor: "#fffc",
-            company: "Ninja",
-            validation: "12/22",
-            ccv: "342"
-          }
-        ]
-      };
-      window.localStorage.setItem("Cards", JSON.stringify(cards));
-    }
+    this.setStorage();
+    this.setActiveCard();
   },
   methods: {
     addCard() {
       console.log("youClicked");
       this.$router.push("/addCard");
     },
+    setActiveCard: function() {
+      console.log("asdsad");
+      if (Object.entries(this.activeCard).length === 0) {
+        this.activeCard = this.CardsData[0];
+      }
+    },
     activateClicked(card) {
-      this.CardsData.splice(this.CardsData.indexOf(card), 1);
-      this.CardsData.push(this.activeCard);
       this.activeCard = card;
+    },
+    setStorage() {
+      let checkCards = JSON.parse(window.localStorage.getItem("Cards"));
+      if (checkCards === null) {
+        let cards = {
+          cards: [
+            {
+              id: "04",
+              holder: "john snow",
+              number: "5595 5960 0938 9383",
+              bgColor: "#222222",
+              textColor: "#fffc",
+              company: "Ninja",
+              validation: "12/22",
+              ccv: "342"
+            },
+            {
+              id: "01",
+              holder: "John Snow",
+              number: "5595 5960 0938 9383",
+              bgColor: "#FFAE34",
+              textColor: "#444",
+              company: "Bitcoin",
+              validation: "12/22",
+              ccv: "956"
+            }
+          ]
+        };
+        window.localStorage.setItem("Cards", JSON.stringify(cards));
+      }
     }
   }
 };
 </script>
 
 <style>
-.home {
+#home {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -99,11 +92,12 @@ export default {
   justify-content: space-between;
 }
 
-button {
+.btn {
   width: 100%;
   border: black 1px solid;
   padding: 1.2rem 2.6rem;
   margin-bottom: 1rem;
+  margin-top: 1rem;
   text-align: center;
   cursor: pointer;
   text-transform: uppercase;
@@ -116,7 +110,7 @@ button {
 }
 
 @media all and (min-width: 600px) {
-  .home {
+  #home {
     width: 378px;
   }
 }
