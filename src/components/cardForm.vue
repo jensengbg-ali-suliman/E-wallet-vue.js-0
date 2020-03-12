@@ -27,7 +27,6 @@
 
 <script>
 import Btn from "../components/button.vue";
-import Cards from "../assets/data.json";
 
 export default {
   components: {
@@ -39,14 +38,15 @@ export default {
       cardholderName: "",
       validation: "",
       ccv: "",
-      vendor: ""
+      vendor: "",
+      Cards: JSON.parse(window.localStorage.getItem("Cards"))
     };
   },
   methods: {
     addCard: function() {
       let newId = Math.round(Math.random() * 1000);
       let newCardNumber = this.cardNumber;
-      console.log(newCardNumber);
+
       let newCard = {
         id: JSON.stringify(newId),
         holder: this.cardholderName,
@@ -58,6 +58,20 @@ export default {
         ccv: this.ccv
       };
 
+      if (this.vendor == "Block Chain") {
+        newCard.bgColor = "#8B58F9";
+        newCard.textColor = "#fffc";
+      } else if (this.vendor == "Evil Corp") {
+        newCard.bgColor = "#F33355";
+        newCard.textColor = "#fffc";
+      } else if (this.vendor == "Ninja") {
+        newCard.bgColor = "#222222";
+        newCard.textColor = "#fffc";
+      } else if (this.vendor == "Bitcoin") {
+        newCard.bgColor = "#FFAE34";
+        newCard.textColor = "#444";
+      }
+
       //validation of card number
 
       if (newCardNumber.length < 16) {
@@ -68,7 +82,6 @@ export default {
         if (isNaN(parseInt(newCardNumber))) {
           alert("Card number must be a valid number");
         } else {
-          console.log(parseInt(newCardNumber));
           let number = newCardNumber.split("");
           for (let i = 0; i < 4; i++) {
             if (i < 3) {
@@ -77,16 +90,26 @@ export default {
               newCard.number += number.splice(0, 4).join("");
             }
           }
+
+          // validation of validation date and ccv number
+
+          if (isNaN(parseInt(this.validation)) || isNaN(parseInt(this.ccv))) {
+            alert("Validation date and CCV must be a number");
+          } else {
+            if (
+              this.validation.length > 5 ||
+              this.validation.indexOf("/") == -1
+            ) {
+              alert(
+                "Validation date must be a four digit number and contain a '/'"
+              );
+            } else {
+              this.Cards.cards.push(newCard);
+              window.localStorage.setItem("Cards", JSON.stringify(this.Cards));
+              this.$router.push("/");
+            }
+          }
         }
-      }
-
-      // validation of validation date and ccv number
-
-      if (isNaN(parseInt(this.validation)) || isNaN(parseInt(this.ccv))) {
-        alert("Validation date and CCV must be a number");
-      } else {
-        Cards.cards.push(newCard);
-        this.$router.push("/");
       }
     }
   }
